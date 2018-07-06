@@ -2,15 +2,17 @@ const Koa = require('koa')
 const app = new Koa()
 app.listen(3000)
 
-const getPageType = require('./api/page').getPageType
+const db = require('./api/page')
 
 const router = async ctx => {
     const path = ctx.request.path
     console.log(path)
     ctx.response.type = 'text'
-    if(path === '/api/pagetype'){
-        ctx.response.body = await getPageType()
-    }else {
+    if(path === '/query/articles'){
+        ctx.response.body = await db.article.getList()
+    }else if(path === '/query/categories'){
+    	ctx.response.body = await db.category.getList()
+    }else{
         ctx.response.body = 'hello world'
     }
 }
